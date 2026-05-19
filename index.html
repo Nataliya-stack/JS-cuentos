@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>  
+     <style>
+        @import url('https://googleapis.com');        
+        body {
+            background: linear-gradient(135deg, #09090b 0%, #180828 50%, #030712 100%); 
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Quicksand", sans-serif;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .slider-content {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        #picture {
+            width: 100%;
+            height: 35vh; 
+            object-fit: cover; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        #city-card {
+            background: rgba(15, 11, 25, 0.85);
+            backdrop-filter: blur(16px);
+            padding: 24px;
+            border-top: 2px solid rgba(168, 85, 247, 0.2);
+            flex: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .controls-wrapper {
+            display: flex;
+            width: 100%;
+            background-color: #09090b;
+            padding: 12px;
+            box-sizing: border-box;
+            gap: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn {
+            background-color: #121214; 
+            color: #e2e8f0;
+            font-size: 16px;
+            font-weight: bold;
+            border: 1px solid rgba(168, 85, 247, 0.2);
+            flex: 1;
+            padding: 14px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn:hover {
+            background-color: #1a1025;
+            color: #d946ef; 
+            border-color: #d946ef;
+            box-shadow: 0 0 12px rgba(217, 70, 239, 0.2);
+        }
+
+        #btn-timer {
+            background-color: #334155 !important; 
+            color: #f8fafc !important;
+        }
+        
+        #btn-timer:hover {
+            background-color: #475569 !important;
+            color: #a855f7 !important; 
+        }
+
+        #btn-timer.active {
+            background-color: #33505f !important; 
+            color: #ffffff !important;
+            box-shadow: 0 0 15px rgba(2, 132, 199, 0.5) !important;
+        }
+
+        #btn-timer.active:hover {
+            background-color: #27495c !important; 
+        }
+
+        @media (min-width: 768px) {
+            body {
+                overflow: hidden; 
+            }
+
+            #container {
+                flex-direction: row;
+                justify-content: center; 
+                height: 100vh; 
+                gap: 0;
+            }
+
+            .slider-content {
+                flex-direction: row;
+                height: 100vh;
+                order: 2; 
+            }
+
+            #picture {
+                height: 100vh; 
+                width: auto; 
+                flex: 1;
+                max-width: calc(100% - 340px); 
+                box-shadow: none;
+            }
+
+            #city-card {
+                width: 340px;
+                height: 100vh;
+                border-top: none;
+                border-left: 2px solid rgba(168, 85, 247, 0.2);
+                padding: 50px 30px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                background: rgba(9, 9, 11, 0.95);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            }
+
+            .controls-wrapper {
+                display: contents; 
+            }
+
+            .btn {
+                height: 100vh; 
+                width: 80px;
+                flex: none;
+                font-size: 24px;
+                border-radius: 0; 
+                border: none;
+                border-right: 1px solid rgba(255, 255, 255, 0.03);
+                background-color: #0c0c0e; 
+            }
+            #last {
+                border-right: none;
+                border-left: 1px solid rgba(255, 255, 255, 0.03);
+            }
+
+            #first { order: 1; }
+            #back { order: 3; }
+       
+            #btn-timer { 
+                position: absolute; 
+                bottom: 30px; 
+                left: 110px; 
+                height: auto; 
+                width: auto;
+                padding: 14px 28px;
+                border-radius: 50px;
+                z-index: 50;
+                font-size: 14px;
+                border: 1px solid #a855f7;
+            }
+            #next { order: 4; }
+            #last { order: 5; }
+        }
+  </style>
+  <title>JS - Cuentos Clásicos</title>
+</head>
+
+<body class="h-screen sm:min-h-screen flex items-center justify-center p-0 overflow-hidden">
+
+   <div id="container">
+        
+        <div class="controls-wrapper">
+            <button id="first" class="btn">|◀</button>
+            <button id="back" class="btn">BACK</button>
+            <button id="btn-timer" class="btn">▶ PLAY</button>
+            <button id="next" class="btn">NEXT</button>
+            <button id="last" class="btn">▶|</button>
+        </div>
+        
+        <div class="slider-content">
+            <img id="picture" src="./img/caperucita_roja.jpg" alt="cuento">
+            
+            <div id="city-card">
+                <h2 id="cuento-name" class="text-3xl md:text-4xl font-bold text-[#a855f7] mb-6 tracking-wide drop-shadow-[0_0_8px_rgba(34,211,234,0.3)]" style="font-family: 'Lobster', sans-serif;"></h2>
+                <h4 id="cuento-autor" class="text-3xl md:text-2xl font-bold text-slate-300 mb-6 tracking-wide drop-shadow-[0_0_8px_rgba(34,211,234,0.3)]" style="font-family: 'Lobster', sans-serif;"></h4>
+                <ul id="cuento-info" class="space-y-3 text-sm text-slate-300 list-disc list-inside font-medium uppercase tracking-wider"></ul>
+            </div>
+        </div>
+    </div>
+
+     <script src="./js/app.js"></script>
+</body>
+</html>
